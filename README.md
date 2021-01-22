@@ -12,4 +12,4 @@ Prerequesites:
   * C++17 (because the boost shared library lib needs it)
 
 The testrunner is called *testhost* and need to be called like this:
-testhost <path-to-shared-lib> <optional-test-filter>
+`testhost <path-to-shared-lib> <optional-test-filter>`
