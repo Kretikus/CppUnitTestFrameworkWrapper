@@ -40,6 +40,7 @@ namespace MyTest
     virtual void InitClass() {}
     virtual void DeInitClass() {}
     virtual void InitMethod() {}
+    virtual void CleanupMethod() {}
   };
 
   template <typename T>
@@ -93,6 +94,12 @@ void mname()
 
 // Call init method over virtual method.
 #define TEST_METHOD_INITIALIZE(mname) void InitMethod() override { \
+  mname(); \
+} \
+void mname()
+
+// Call cleanup method over virtual method.
+#define TEST_METHOD_CLEANUP(mname) void CleanupMethod() override { \
   mname(); \
 } \
 void mname()
