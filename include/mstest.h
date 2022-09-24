@@ -427,4 +427,10 @@ inline void Fail(const std::wstring& str)
   throw AssertFailed(ss.str());
 }
 
+inline void Fail()
+{
+  std::string ss{"Failed"};
+  throw AssertFailed(ss);
+}
+
 }
