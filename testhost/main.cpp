@@ -106,6 +106,7 @@ int main(int argc, char* argv[])
             failedTests.push_back(std::make_pair(testname, Assert::AssertFailed("Unexpected exception")));
           }
 
+          classUnderTest->CleanupMethod();
           classUnderTest->DeInitClass();
           mInfo->pDestroyMethod(classUnderTest);
           ++totalTests;

@@ -40,6 +40,7 @@ namespace MyTest
     virtual void InitClass() {}
     virtual void DeInitClass() {}
     virtual void InitMethod() {}
+    virtual void CleanupMethod() {}
   };
 
   template <typename T>
@@ -93,6 +94,12 @@ void mname()
 
 // Call init method over virtual method.
 #define TEST_METHOD_INITIALIZE(mname) void InitMethod() override { \
+  mname(); \
+} \
+void mname()
+
+// Call cleanup method over virtual method.
+#define TEST_METHOD_CLEANUP(mname) void CleanupMethod() override { \
   mname(); \
 } \
 void mname()
@@ -264,6 +271,7 @@ inline void __AreEqual(const Expected& expected, const Actual& actual,
 }
 
 #define AreEqual(expected, actual, ...) __AreEqual(expected, actual, __FILE__, __LINE__, ##__VA_ARGS__)
+#define VERIFY_ARE_EQUAL(expected, actual, ...) Assert::__AreEqual(expected, actual, __FILE__, __LINE__, ##__VA_ARGS__)
 
 
 template<typename Expected, typename Actual>
@@ -319,6 +327,7 @@ inline void __IsFalse(const bool& val, const char* expr,
 
 
 #define IsFalse(expr, ...) __IsFalse(expr, #expr, __FILE__, __LINE__, ##__VA_ARGS__)
+#define VERIFY_IS_FALSE(expr, ...) Assert::__IsFalse(expr, #expr, __FILE__, __LINE__, ##__VA_ARGS__)
 
 inline void __IsTrue(const bool& val, const char* expr,
                      const char* file, int line, const std::string& remark = std::string())
@@ -340,7 +349,41 @@ inline void __IsTrue(const bool& val, const char* expr,
   }
 }
 #define IsTrue(expr, ...) __IsTrue(expr, #expr, __FILE__, __LINE__, ##__VA_ARGS__)
+#define VERIFY_IS_TRUE(expr, ...) Assert::__IsTrue(expr, #expr, __FILE__, __LINE__, ##__VA_ARGS__)
 
+
+template<typename Expected, typename Actual>
+inline void __IsLessThan(const Expected& expectedLess, const Actual& expectedGreater,
+                         const char* file, int line, const std::string& remark = std::string())
+{
+  if (!(expectedLess < expectedGreater)) {
+    std::stringstream ss;
+    ss << "expectedLess is not less than expectedGreater" << " " << file << " " << line;
+    if (!remark.empty()) ss << " Remark: " << remark;
+    ss << "\n";
+    PrintHelper::getActualAndExpected(ss, expectedLess, expectedGreater);
+    std::cerr << ss.str();
+    throw AssertFailed(ss.str());
+  }
+}
+
+template<typename Expected, typename Actual>
+inline void __IsLessThan(const Expected& expectedLess, const Actual& expectedGreater,
+                         const char* file, int line, const std::wstring& remark)
+{
+  if (!(expectedLess < expectedGreater)) {
+    std::stringstream ss;
+    ss << "expectedLess is not less than expectedGreater" << " " << file << " " << line;
+    if (!remark.empty()) ss << " Remark: " << toStdString(remark);
+    ss << "\n";
+    PrintHelper::getActualAndExpected(ss, expectedLess, expectedGreater);
+    std::cerr << ss.str();
+    throw AssertFailed(ss.str());
+  }
+}
+
+#define IsLessThan(expected, actual, ...) __IsLessThan(expected, actual, __FILE__, __LINE__, ##__VA_ARGS__)
+#define VERIFY_IS_LESS_THAN(expectedLess, expectedGreater, ...) Assert::__IsLessThan(expectedLess, expectedGreater, __FILE__, __LINE__, ##__VA_ARGS__)
 
 inline void __IsNull(const void* ptr, const char* expr,
                      const char* file, int line, const std::string& remark = std::string())
@@ -418,6 +461,12 @@ inline void Fail(const std::wstring& str)
   std::stringstream ss;
   ss << buff.data() << "\n";
   throw AssertFailed(ss.str());
+}
+
+inline void Fail()
+{
+  std::string ss{"Failed"};
+  throw AssertFailed(ss);
 }
 
 }
