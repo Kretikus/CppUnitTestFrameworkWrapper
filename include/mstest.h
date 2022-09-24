@@ -271,6 +271,7 @@ inline void __AreEqual(const Expected& expected, const Actual& actual,
 }
 
 #define AreEqual(expected, actual, ...) __AreEqual(expected, actual, __FILE__, __LINE__, ##__VA_ARGS__)
+#define VERIFY_ARE_EQUAL(expected, actual, ...) Assert::__AreEqual(expected, actual, __FILE__, __LINE__, ##__VA_ARGS__)
 
 
 template<typename Expected, typename Actual>
@@ -326,6 +327,7 @@ inline void __IsFalse(const bool& val, const char* expr,
 
 
 #define IsFalse(expr, ...) __IsFalse(expr, #expr, __FILE__, __LINE__, ##__VA_ARGS__)
+#define VERIFY_IS_FALSE(expr, ...) Assert::__IsFalse(expr, #expr, __FILE__, __LINE__, ##__VA_ARGS__)
 
 inline void __IsTrue(const bool& val, const char* expr,
                      const char* file, int line, const std::string& remark = std::string())
@@ -347,6 +349,7 @@ inline void __IsTrue(const bool& val, const char* expr,
   }
 }
 #define IsTrue(expr, ...) __IsTrue(expr, #expr, __FILE__, __LINE__, ##__VA_ARGS__)
+#define VERIFY_IS_TRUE(expr, ...) Assert::__IsTrue(expr, #expr, __FILE__, __LINE__, ##__VA_ARGS__)
 
 
 inline void __IsNull(const void* ptr, const char* expr,
