@@ -11,8 +11,10 @@ Instead of template assert functions, as MS is using, this wrapper uses macrcos 
 
 Prerequesites:
   * boost-1.67 and higher
-  * C++17 (because the boost shared library lib needs it)
+  * C++20 (because the boost shared library lib needs C++17, and std::source_location needs C++20)
+  * libuuid
 
 The test runner is called *testhost*.
 You needs to call it like this:
-`testhost <path-to-shared-lib> <optional-test-filter>`
+`testhost --so <path-to-shared-lib> [--filter <optional-test-filter>] [--trx <optional-path-to-outputTrx>]` 
+
