@@ -37,8 +37,8 @@ public:
   }
 
   TEST_METHOD(InitTest1) {
-    Assert::AreEqual("InitOnClass", stringInitOnInitClass);
-    Assert::AreEqual("InitOnMethod", stringInitOnInitMethod);
+    Assert::AreEqual(std::string("InitOnClass"), stringInitOnInitClass);
+    Assert::AreEqual(std::string("InitOnMethod"), stringInitOnInitMethod);
     stringInitOnInitMethod = "";
   }
 
@@ -46,8 +46,8 @@ public:
       TEST_METHOD_ATTRIBUTE(L"Something", L"Something")
   END_TEST_METHOD_ATTRIBUTE()
   TEST_METHOD(InitTest2) {
-    Assert::AreEqual("InitOnClass", stringInitOnInitClass);
-    Assert::AreEqual("InitOnMethod", stringInitOnInitMethod);
+    Assert::AreEqual(std::string("InitOnClass"), stringInitOnInitClass);
+    Assert::AreEqual(std::string("InitOnMethod"), stringInitOnInitMethod);
     stringInitOnInitMethod = "";
   }
 

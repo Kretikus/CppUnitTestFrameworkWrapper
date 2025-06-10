@@ -1,0 +1,8 @@
+# Build results
+[Bb]in/
+[Ll]ib/
+[Oo]bj/
+BuildOutput/
+
+# Docker env vars
+.env
